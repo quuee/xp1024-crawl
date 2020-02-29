@@ -117,4 +117,16 @@ public class M3U8DownloadUtil {
         return file.getPath();
     }
 
+    /**
+     * 合并源目录下的
+     * 文件合并顺序 不能乱
+     * @param directory 源目录
+     * @param destination 目的地
+     */
+    public static void mergeM3u8ToVideo(File directory,File destination){
+
+
+
+    }
+
 }

@@ -10,7 +10,7 @@ import java.util.List;
 
 /**
  * 多线程下载类
- *
+ * 这个是平均分配任务执行下载
  * @author ccx
  * @version V1.0
  * @Package com.xp1024.tools

@@ -20,6 +20,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicInteger;
 
 
 /**
@@ -109,8 +111,8 @@ public class ProcessorStart {
         String content = M3U8DownloadUtil.readM3u8IndexFile("d:\\temp\\hp1QKyzm.m3u8");
         List<String> urls = M3U8DownloadUtil.analysisIndex(content);
 
-        int threadQuantity = 4;//设置线程数量
-        ExecutorService executorService = Executors.newFixedThreadPool(4);
+        final int threadQuantity = 4;//设置线程数量
+        ExecutorService executorService = Executors.newFixedThreadPool(threadQuantity);
         int everyThreadQuantity = (urls.size() + threadQuantity - 1) / threadQuantity;//获得每个线程需要的任务量
         for (int i = 0; i < urls.size(); i += everyThreadQuantity) {
             int startIndex = i;
@@ -126,6 +128,39 @@ public class ProcessorStart {
         while (!executorService.isTerminated()) {
             //一直循环等到所有任务被执行完毕时继续往下执行
         }
+    }
+
+    /**
+     * 测试多线程下载
+     */
+    @Test
+    public void testTreadDownload2(){
+        String content = M3U8DownloadUtil.readM3u8IndexFile("d:\\temp\\hp1QKyzm.m3u8");
+        //转换成同步的集合
+//        List<String> synchronizedList = Collections.synchronizedList(M3U8DownloadUtil.analysisIndex(content));
+        List<String> synchronizedList = M3U8DownloadUtil.analysisIndex(content);
+        int threadQuantity = 4;//设置线程数量
+        ExecutorService executorService = Executors.newFixedThreadPool(threadQuantity);
+        AtomicInteger count= new AtomicInteger();
+        for (String url : synchronizedList) {
+            executorService.execute(()->{
+//                String path = M3U8DownloadUtil.commonDownload(url, "d:\\temp\\hp1qkyzm");
+                System.out.println("线程名:"+Thread.currentThread().getName()+",url:"+url);
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                count.getAndIncrement();
+            });
+        }
+        executorService.shutdown();
+//        executorService.awaitTermination(5, TimeUnit.SECONDS);
+        while (!executorService.isTerminated()) {
+
+            //一直循环等到所有任务被执行完毕时继续往下执行
+        }
+        System.out.println(count);
 
     }
 
