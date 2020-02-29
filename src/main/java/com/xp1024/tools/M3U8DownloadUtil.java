@@ -37,10 +37,10 @@ public class M3U8DownloadUtil {
             while ((line = bufferedReader.readLine()) != null) {
                 stringBuffer.append(line).append("\n");
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
-        }finally {
-            if(bufferedReader!=null){
+        } finally {
+            if (bufferedReader != null) {
                 try {
                     bufferedReader.close();
                 } catch (IOException e) {
@@ -58,7 +58,7 @@ public class M3U8DownloadUtil {
 
         List<String> list = new ArrayList<>();
 
-        while(ma.find()){
+        while (ma.find()) {
             list.add(ma.group());
         }
         return list;
@@ -66,12 +66,13 @@ public class M3U8DownloadUtil {
 
     /**
      * 通用下载
-     * @param originUrl 文件源路径
+     *
+     * @param originUrl  文件源路径
      * @param parentPath 本地存储路径
      */
-    public static String commonDownload(String originUrl,String parentPath) {
+    public static String commonDownload(String originUrl, String parentPath) {
         File parent = new File(parentPath);
-        if(!parent.exists()){
+        if (!parent.exists()) {
             parent.mkdirs();
         }
 
@@ -80,7 +81,7 @@ public class M3U8DownloadUtil {
         File file = null;
         try {
             URL url = new URL(originUrl);
-            URLConnection urlConnection =  url.openConnection();
+            URLConnection urlConnection = url.openConnection();
             urlConnection.setConnectTimeout(60000);//链接超时数60秒
 //            urlConnection.setUseCaches(false);
             urlConnection.setReadTimeout(120000);//读取超时数120秒
@@ -88,8 +89,8 @@ public class M3U8DownloadUtil {
 
             inputStream = urlConnection.getInputStream();
 
-            file = new File(parentPath +File.separator+ UrlUtil.getLastName(originUrl));
-            if(!file.exists()){
+            file = new File(parentPath + File.separator + UrlUtil.getLastName(originUrl));
+            if (!file.exists()) {
                 file.createNewFile();
             }
             fileOutputStream = new FileOutputStream(file);
@@ -100,15 +101,15 @@ public class M3U8DownloadUtil {
             }
         } catch (IOException e) {
             e.printStackTrace();
-        }finally {
-            if (inputStream!=null){
+        } finally {
+            if (inputStream != null) {
                 try {
                     inputStream.close();
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
             }
-            if(fileOutputStream!=null){
+            if (fileOutputStream != null) {
                 try {
                     fileOutputStream.close();
                 } catch (IOException e) {
@@ -122,11 +123,12 @@ public class M3U8DownloadUtil {
     /**
      * 合并源目录下的
      * 文件合并顺序 不能乱
-     * @param directory 源目录
+     *
+     * @param directory   源目录
      * @param destination 文件
      */
-    public static void mergeM3u8ToVideo(File directory,File destination){
-        FileOutputStream outputStream=null;
+    public static void mergeM3u8ToVideo(File directory, File destination) {
+        FileOutputStream outputStream = null;
         FileInputStream in = null;
         try {
             outputStream = new FileOutputStream(destination);
@@ -139,21 +141,21 @@ public class M3U8DownloadUtil {
                 in = new FileInputStream(file);
                 byte[] bytes = new byte[1024];
                 int len = 0;
-                while((len = in.read(bytes)) > 0){
-                    outputStream.write(bytes,0,len);
+                while ((len = in.read(bytes)) > 0) {
+                    outputStream.write(bytes, 0, len);
                 }
             }
         } catch (IOException e) {
             e.printStackTrace();
         } finally {
-            if(outputStream!=null){
+            if (outputStream != null) {
                 try {
                     outputStream.close();
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
             }
-            if(in!=null){
+            if (in != null) {
                 try {
                     in.close();
                 } catch (IOException e) {
