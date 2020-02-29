@@ -45,7 +45,7 @@ public class M3U8Download implements Runnable {
             log.info("线程:{},正在下载第:{}个,总数:{},总计完成:{}%", Thread.currentThread().getName(),
                     currentNum,
                     urlList.size(),
-                    new BigDecimal((currentNum) / urlList.size()).setScale(2, RoundingMode.HALF_UP).intValue() * 100);
+                    new BigDecimal(currentNum/ urlList.size()).setScale(2, RoundingMode.HALF_UP));
         }
     }
 }

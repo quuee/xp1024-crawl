@@ -15,6 +15,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import us.codecraft.webmagic.Spider;
 
+import java.io.File;
 import java.text.ParseException;
 import java.util.Date;
 import java.util.List;
@@ -139,7 +140,7 @@ public class ProcessorStart {
         //转换成同步的集合
 //        List<String> synchronizedList = Collections.synchronizedList(M3U8DownloadUtil.analysisIndex(content));
         List<String> synchronizedList = M3U8DownloadUtil.analysisIndex(content);
-        int threadQuantity = 4;//设置线程数量
+        final int threadQuantity = 4;//设置线程数量
         ExecutorService executorService = Executors.newFixedThreadPool(threadQuantity);
         AtomicInteger count= new AtomicInteger();
         for (String url : synchronizedList) {
@@ -167,6 +168,12 @@ public class ProcessorStart {
     @Test
     public void testDouble(){
         System.out.println(3/2);
+    }
+
+    @Test
+    public void mergeTest(){
+        System.out.println("合并测试");
+        M3U8DownloadUtil.mergeM3u8ToVideo(new File("d:\\temp\\hp1qkyzm"),new File("d:\\temp\\hp1qkyzm\\test.mp4"));
     }
 
 }

@@ -1,6 +1,8 @@
 package com.xp1024.tools;
 
 import com.xp1024.util.UrlUtil;
+import org.apache.commons.io.filefilter.SuffixFileFilter;
+
 import java.io.*;
 import java.net.URL;
 import java.net.URLConnection;
@@ -121,12 +123,44 @@ public class M3U8DownloadUtil {
      * 合并源目录下的
      * 文件合并顺序 不能乱
      * @param directory 源目录
-     * @param destination 目的地
+     * @param destination 文件
      */
     public static void mergeM3u8ToVideo(File directory,File destination){
+        FileOutputStream outputStream=null;
+        FileInputStream in = null;
+        try {
+            outputStream = new FileOutputStream(destination);
+            //根据文件结尾过滤
+            File[] files = directory.listFiles((FilenameFilter) new SuffixFileFilter(".ts"));
 
+            // TODO 文件排序
 
-
+            for (File file : files) {
+                in = new FileInputStream(file);
+                byte[] bytes = new byte[1024];
+                int len = 0;
+                while((len = in.read(bytes)) > 0){
+                    outputStream.write(bytes,0,len);
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            if(outputStream!=null){
+                try {
+                    outputStream.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+            if(in!=null){
+                try {
+                    in.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
     }
 
 }

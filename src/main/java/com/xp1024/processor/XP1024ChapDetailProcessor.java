@@ -44,7 +44,7 @@ public class XP1024ChapDetailProcessor implements PageProcessor {
 
         String url = XP1024Const.M3U8+"/"+param+".m3u8";
 
-        M3U8DownloadUtil.commonDownload(url,"d:\\");
+        M3U8DownloadUtil.commonDownload(url,"d:\\temp");
 
     }
 
